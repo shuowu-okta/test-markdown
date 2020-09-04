@@ -1,10 +1,3 @@
-# test-markdown
-
-| table | col1 | col2 |
-| --- | --- | --- |
-| text | <ul><li>item1</li><li>item1</li></ul> | text col2 |
-| text | aaa <ul><li>item1</li><li>item1</li></ul> | text col2 |
-
 #### Required Options
 
 ##### `issuer`
@@ -80,5 +73,33 @@ By default all tokens will be stored under the key `okta-token-storage`. You may
 
 An object containing additional properties used when setting cookies
 
-* `secure`: Defaults to `true`, unless the application origin is `http://localhost`, in which case it is forced to `false`. If `true`, the SDK will set the "Secure" option on all cookies. When this option is `true`, an exception will be thrown if the application origin is not using the HTTPS protocol. Setting to `false` will allow setting cookies on an HTTP origin, but is not recommended for production applications.
-* `sameSite`: Defaults to `none` if the `secure` option is `true`, or `lax` if the `secure` option is false. Allows fine-grained control over the same-site cookie setting. A value of `none` allows embedding within an iframe. A value of `lax` will avoid being blocked by user "3rd party" cookie settings. A value of `strict` will block all cookies when redirecting from Okta and is not recommended.
+###### `secure`
+
+Defaults to `true`, unless the application origin is `http://localhost`, in which case it is forced to `false`. If `true`, the SDK will set the "Secure" option on all cookies. When this option is `true`, an exception will be thrown if the application origin is not using the HTTPS protocol. Setting to `false` will allow setting cookies on an HTTP origin, but is not recommended for production applications.
+
+###### `sameSite`
+
+Defaults to `none` if the `secure` option is `true`, or `lax` if the `secure` option is false. Allows fine-grained control over the same-site cookie setting. A value of `none` allows embedding within an iframe. A value of `lax` will avoid being blocked by user "3rd party" cookie settings. A value of `strict` will block all cookies when redirecting from Okta and is not recommended.
+
+#### Example Client
+
+```javascript
+var config = {
+  // Required config
+  issuer: 'https://{yourOktaDomain}/oauth2/default',
+
+  // Required for login flow using getWithRedirect()
+  clientId: 'GHtf9iJdr60A9IYrR0jw',
+  redirectUri: 'https://acme.com/oauth2/callback/home',
+
+  // Parse authorization code from hash fragment instead of search query
+  responseMode: 'fragment',
+
+  // Configure TokenManager to use sessionStorage instead of localStorage
+  tokenManager: {
+    storage: 'sessionStorage'
+  }
+};
+
+var authClient = new OktaAuth(config);
+```
